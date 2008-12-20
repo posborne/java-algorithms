@@ -3,7 +3,7 @@ package net.posborne.algorithms.sorting;
 import java.util.List;
 
 /**
- * 
+ * Container for an implementation of insertion sort.
  * 
  * @author Paul Osborne
  * @version December 20, 2008
