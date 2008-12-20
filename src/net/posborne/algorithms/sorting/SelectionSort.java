@@ -16,7 +16,21 @@ public class SelectionSort {
      * For such lists the efficiency is O(n + d) where d is the number of inversions that
      * must be performed.
      * 
-     * The insertion sort works by working through the data items and 
+     * The insertion sort works by taking a single item at a time (starting with the second
+     * item in the list) and finding the place in the list the value should be located.
+     * 
+     *      \/
+     * 1. 8 4 6 2
+     * => 8 8 6 2
+     * => 4 8 6 2
+     *        \/  
+     * 2. 4 8 6 2
+     * => 4 8 8 2
+     * => 4 6 8 2
+     *          \/
+     * 3. 4 6 8 2
+     * => 4 4 6 8
+     * => 2 4 6 8
      * 
      * @param <T> The comparable type in the list to be sorted.
      * @param list The list of items that should be sorted.
@@ -25,7 +39,7 @@ public class SelectionSort {
         for (int i = 1; i < list.size(); i++) {
             T value = list.get(i);
             int j;
-            for (j = i -1; j >= 0 && list.get(j).compareTo(value) > 0; j--) {
+            for (j = i - 1; j >= 0 && list.get(j).compareTo(value) > 0; j--) {
                 list.set(j + 1, list.get(j));
             }
             list.set(j + 1, value);
