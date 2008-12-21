@@ -1,5 +1,6 @@
 package net.posborne.algorithms.sorting;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,6 +57,50 @@ public class BucketSort {
     public static void sort(List<Integer> list, Integer listMin,  Integer listMax) {
         int numBuckets = (int) Math.ceil(list.size() / 30); // ~ 30 items/bucket
         
+        // initialize the buckets
+        ArrayList<ArrayList<Integer>> buckets = new ArrayList<ArrayList<Integer>>(numBuckets);
+        for (int i = 0; i < numBuckets; i++) {
+        	buckets.add(new ArrayList<Integer>());
+        }
+        
+        // go through the list and put each item in the correct bucket
+        for (int i = 0; i < list.size(); i++) {
+        	int bucket = bucketForNumber(list.get(i), listMin, listMax, numBuckets);
+        	buckets.get(bucket).add(list.get(i));
+        }
+        
+        // sort each of the buckets using insertion sort
+        int listIndex = 0;
+        for (ArrayList<Integer> bucket : buckets) {
+        	InsertionSort.sort(bucket);
+        	for (Integer item : bucket) {
+        		list.set(listIndex++, item);
+        	}
+        }
     }
+
+    /**
+     * Determine what bucket a number should be in based on the parameters given.  There
+     * are some tricky conditions in here that need to be dealt with as this is not
+     * a simple pigeonholable implementation of bucket sort.
+     * 
+     * @param number
+     * @param listMin
+     * @param listMax
+     * @param numBuckets
+     * @return
+     */
+	private static int bucketForNumber(Integer number, Integer listMin, Integer listMax, Integer numBuckets) {
+		Long difference = (long)listMax - listMin;
+		int increment = (int)Math.ceil(difference / numBuckets);
+		increment = increment <= 0 ? 1 : increment;
+		int bucket = number / increment;
+		if (bucket >= numBuckets) {
+			bucket = numBuckets - 1;
+		} else if (bucket < 0) {
+			bucket = 0;
+		}
+		return bucket;
+	}
     
 }
